@@ -7,7 +7,7 @@ from app.models.models import Example
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    from app import models
+    from app.models import models
     from app.database import engine
 
     models.Base.metadata.create_all(bind=engine)
