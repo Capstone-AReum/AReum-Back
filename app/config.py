@@ -9,7 +9,7 @@ class Settings():
     DB_URL = os.environ.get("DB_URL")
     DB_PASS = os.environ.get("DB_PASS")
     DB_NAME = os.environ.get("DB_NAME")
-    DB_PORT = int(os.environ.get("DB_PORT"))
+    DB_PORT = int(os.environ.get("DB_PORT", 3306))
 
 @lru_cache
 def get_settings():
