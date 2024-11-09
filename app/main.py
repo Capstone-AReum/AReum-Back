@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends
 from contextlib import asynccontextmanager
 from sqlalchemy.orm import Session
 
-from app.database import get_db, Base
+from app.database import get_db
 from app.models.models import Example
 
 @asynccontextmanager
@@ -16,7 +16,7 @@ async def lifespan(app: FastAPI):
 
     pass
 
-app = FastAPI()
+app = FastAPI(lifespan=lifespan)
 
 @app.get("/health")
 def healthCheck(db: Session = Depends(get_db)):
