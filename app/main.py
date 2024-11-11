@@ -1,3 +1,4 @@
+import uvicorn
 from fastapi import FastAPI, Depends
 from contextlib import asynccontextmanager
 from sqlalchemy.orm import Session
@@ -5,8 +6,7 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 #from app.models.models import Example
 
-from fastapi import UploadFile, File, HTTPException
-from app.utils.s3_utils import upload_to_s3
+from app.api.routes import upload
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -21,6 +21,8 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
+app.include_router(upload.router)
+
 @app.get("/health")
 def healthCheck(db: Session = Depends(get_db)):
 #    new_entry = Example(url=str("health"))
@@ -29,10 +31,5 @@ def healthCheck(db: Session = Depends(get_db)):
 #    db.refresh(new_entry)
     return "I'm healthy!"
 
-@app.post("/upload")
-async def upload_file(file: UploadFile = File(...)) -> dict:
-    try:
-        file_url=upload_to_s3(file)
-        return {"file_url": file_url}
-    except RuntimeError as e:
-        raise HTTPException(status_code=500, detail=str(e))
+if __name__=="__main__":
+    uvicorn.run("router_example:app", host='0.0.0.0', port=8000, reload=True)
