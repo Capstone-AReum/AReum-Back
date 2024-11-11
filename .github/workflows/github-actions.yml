@@ -50,6 +50,7 @@ jobs:
                     sudo docker run -d \
                     --name areum-server \
                     -p 80:80 \
+                    --env AWS_REGION=${{ secrets.AWS_REGION }} \
                     --env DB_URL=${{ secrets.DB_URL }} \
                     --env DB_USER=${{ secrets.DB_USERNAME }} \
                     --env DB_PASS=${{ secrets.DB_PASSWORD }} \
@@ -57,7 +58,6 @@ jobs:
                     --env DB_NAME=${{ secrets.DB_NAME }} \
                     --env S3_ACCESS_KEY=${{ secrets.S3_ACCESS_KEY }} \
                     --env S3_SECRET_KEY=${{ secrets.S3_SECRET_KEY }} \
-                    --env S3_BUCKET=${{ secrets.S3_BUCKET }} \
-                    --env AWS_REGION=${{ secrets.AWS_REGION }} \              
+                    --env S3_BUCKET=${{ secrets.S3_BUCKET }} \            
                     -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}
                     sudo docker image prune -f
