@@ -8,8 +8,8 @@ load_dotenv()
 #S3 클라이언트 설정
 s3_client=client(
     's3',
-    aws_access_key_id=os.environ.get("AWS_ACCESS_KEY"),
-    aws_secret_access_key=os.environ.get("AWS_SECRET_KEY"),
+    aws_access_key_id=os.environ.get("S3_ACCESS_KEY"),
+    aws_secret_access_key=os.environ.get("S3_SECRET_KEY"),
     region_name=os.environ.get("AWS_REGION")
 )
 

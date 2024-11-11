@@ -1,10 +1,10 @@
 import os
 from botocore.exceptions import BotoCoreError, ClientError
-from .config import s3_client
+from ..config import s3_client
 
 def upload_to_s3(file) -> None:
     try:
-        bucket_name=os.getenv("AWS_S3_BUCKET")
+        bucket_name=os.getenv("S3_BUCKET")
         region=os.getenv("AWS_REGION")
         s3_client.upload_fileobj(
             file.file,

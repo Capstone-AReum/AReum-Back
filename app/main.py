@@ -3,10 +3,10 @@ from contextlib import asynccontextmanager
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-from app.models.models import Example
+#from app.models.models import Example
 
 from fastapi import UploadFile, File, HTTPException
-from app.s3_utils import upload_to_s3
+from app.utils.s3_utils import upload_to_s3
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
