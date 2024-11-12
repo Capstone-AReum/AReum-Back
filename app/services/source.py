@@ -1,5 +1,5 @@
 from fastapi import UploadFile, HTTPException
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from typing import List
 import secrets
 
@@ -11,6 +11,15 @@ def get_source(db: Session, source_id: int):
 
 def get_album(db: Session, album_id: int):
     return db.query(Album).filter(Album.id==album_id).first()
+    
+def get_source_detail(db: Session, source_id: int) -> dict:
+    source=get_source(db=db, source_id=source_id)
+    if not source:
+        raise HTTPException(status_code=404, detail="No such source")
+    album=get_album(db=db, album_id=source.album_id)
+    if not album:
+        raise HTTPException(status_code=404, detail="No such album")
+    return {"id" : source.id, "url": source.url, "created_at": source.created_at, "title": album.title }
 
 #random한 이름으로 이미지 이름 변경
 def change_filename(file: UploadFile) -> UploadFile:

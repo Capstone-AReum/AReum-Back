@@ -1,11 +1,10 @@
-from pydantic import BaseModel
-from typing import List
+from pydantic import BaseModel, Field
+from typing import List, Optional
 import datetime
 
 class SourceBase(BaseModel):
     id: int
     url: str
-    created_at: datetime.datetime
 
     class Config:
         orm_mode: True
@@ -13,7 +12,6 @@ class SourceBase(BaseModel):
 class AlbumBase(BaseModel):
     id: int
     title: str
-    created_at: datetime.datetime
 
     class Config:
         orm_mode: True

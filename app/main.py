@@ -17,7 +17,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
-app.include_router(source.router)
+app.include_router(source.router, prefix='/albums', tags=["albums"])
 
 @app.get("/health")
 def healthCheck():
