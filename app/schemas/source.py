@@ -10,6 +10,9 @@ class SourceBase(BaseModel):
     class Config:
         orm_mode: True
 
+class SourceDetail(SourceBase):
+    title: str
+
 class AlbumBase(BaseModel):
     id: int
     title: str
