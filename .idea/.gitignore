@@ -1,0 +1,27 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Editor-based HTTP Client requests
+/httpRequests/
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+
+# results 디렉토리 제외
+results/
+
+# sample_images 디렉토리 제외
+sample_images/
+
+uploads/
+
+# JetBrains IDE 관련 설정 중 공유할 항목만 포함
+.idea/*
+!.idea/codeStyles/
+!.idea/runConfigurations/
+*.iml
+
+# Python bytecode 캐시 디렉토리
+__pycache__/
+*.pyc
+*.pyo
