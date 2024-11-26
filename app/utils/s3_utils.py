@@ -11,7 +11,7 @@ def upload_to_s3(file, path) -> None:
             file.file,
             bucket_name,
             s3_path,
-            ExtraArgs={"ContentType": "image/jpeg"},
+            ExtraArgs={"ContentType": "image/png"},
         )
         file_url = f"https://{bucket_name}.s3.{region}.amazonaws.com/{s3_path}"
         return file_url

@@ -1,7 +1,7 @@
 import uvicorn
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
-
+from app.api.routes.rmback import router as rmback_router
 from app.api.routes import source
 
 @asynccontextmanager
@@ -18,6 +18,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 app.include_router(source.router, prefix='/albums', tags=["albums"])
+app.include_router(rmback_router)
 
 @app.get("/health")
 def healthCheck():
