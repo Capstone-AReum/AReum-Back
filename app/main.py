@@ -3,7 +3,6 @@ from fastapi import FastAPI
 from contextlib import asynccontextmanager
 
 from app.api.routes import source
-from app.api.routes import twodto3d
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -19,7 +18,6 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 app.include_router(source.router, prefix='/albums', tags=["albums"])
-app.include_router(twodto3d.router, prefix="/modeling", tags=["modeling"])
 
 @app.get("/health")
 def healthCheck():

@@ -3,7 +3,8 @@ from sqlalchemy.orm import Session
 from typing import List
 
 from app.database import get_db
-from app.services.source import upload_album, get_source_detail, get_all_source, upload_thumbnail
+from app.services.source_query import get_source_detail, get_all_source
+from app.services.source_command import upload_album, upload_thumbnail
 from app.schemas.source import AlbumItems, GalleryResponse, SourceDetail
 
 router=APIRouter()
