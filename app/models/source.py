@@ -19,3 +19,12 @@ class Album(BaseMin, Base):
     title=Column(String(30), nullable=False)
 
     items=relationship("Source", back_populates="owner")
+
+class Thumbnail(BaseMin, Base):
+    __tablename__="thumbnails"
+    source_id=Column(Integer, ForeignKey('sources.id'), nullable=False)
+    album_id=Column(Integer, ForeignKey('albums.id'), nullable=False)
+    model_url=Column(String(255), nullable=False, unique=True)
+
+    source = relationship("Source", backref=None)
+    album = relationship("Album", backref=None)
