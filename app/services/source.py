@@ -33,7 +33,7 @@ def get_all_source(page: int, db: Session):
 #random한 이름으로 이미지 이름 변경
 def change_filename(file: UploadFile) -> UploadFile:
     random_name = secrets.token_urlsafe(16)
-    file.filename=f"{random_name}.png"
+    file.filename=f"{random_name}.jpeg"
     return file
 
 def upload_album(db: Session, title: str, files: List[UploadFile], path: str):

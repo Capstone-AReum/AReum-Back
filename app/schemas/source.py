@@ -1,5 +1,5 @@
-from pydantic import BaseModel, HttpUrl
-from typing import Optional, List
+from pydantic import BaseModel
+from typing import List
 import datetime
 
 class SourceBase(BaseModel):
