@@ -19,10 +19,6 @@ def get_source_detail(db: Session, source_id: int):
         raise HTTPException(status_code=404, detail="No such album")
     return SourceDetail(id=source.id, url=source.url, created_at=source.created_at, title=album.title)
 
-def get_all_source(page: int, db: Session):
-    skip=(page-1)*10
-    total_count=db.query(Source).count()
-    images=db.query(Source).order_by(Source.created_at.desc()).offset(skip).limit(10).all()
-
-    image_list = [SourceBase(id=image.id, url=image.url, created_at=image.created_at) for image in images]
-    return GalleryResponse(images=image_list, total_count=total_count, page=page, per_page=10)
+def get_all_source(skip: int, limit: int, db: Session):
+    images=db.query(Source).order_by(Source.created_at.desc()).offset(skip).limit(limit).all()
+    return [{"id": image.id, "url": image.url, "date": image.created_at.date()} for image in images]

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, UploadFile, File, Depends
+from fastapi import APIRouter, UploadFile, File, Depends, Query
 from sqlalchemy.orm import Session
 from typing import List
 
@@ -16,9 +16,9 @@ async def upload_file(title: str, files: List[UploadFile] = File(...), db: Sessi
     return new_album
 
 #앨범 전체 조회
-@router.get("/all", response_model=GalleryResponse)
-async def get_gallery(page: int, db: Session = Depends(get_db)):
-    return get_all_source(page=page, db=db)
+@router.get("/all", response_model=List[GalleryResponse])
+async def get_gallery(skip: int = Query(0, ge=0), limit: int = Query(10, ge=1), db: Session = Depends(get_db)):
+    return get_all_source(skip=skip, limit=limit, db=db)
 
 #이미지 상세 조회
 @router.get("/{source_id}/details", response_model=SourceDetail)
