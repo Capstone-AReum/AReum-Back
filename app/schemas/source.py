@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import List
 import datetime
+from datetime import date
 
 class SourceBase(BaseModel):
     id: int
@@ -25,10 +26,9 @@ class AlbumItems(AlbumBase):
     items: List[SourceBase] = []
 
 class GalleryResponse(BaseModel):
-    images: List[SourceBase]
-    total_count: int
-    page: int
-    per_page: int
+    id: int
+    url: str
+    date: date
 
     class Config:
         orm_mode: True
