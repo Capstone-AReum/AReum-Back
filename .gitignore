@@ -1,52 +1,5 @@
-# Python 기본 파일 및 디렉토리
+#환경 변수
+*.env
+
+#Python 캐시 및 컴파일 파일
 __pycache__/
-*.py[cod]
-*.pyo
-*.so
-*.egg
-*.egg-info/
-dist/
-build/
-*.log
-*.pot
-*.mo
-
-# 환경 설정 파일
-.env
-*.env.*
-.vscode/
-.idea/
-*.DS_Store
-
-# FastAPI 및 관련 파일
-*.db
-*.sqlite
-*.xml  # XML 파일 제외
-*.pem  # 인증서 키
-*.key
-*.crt
-
-# Dependency management tools
-venv/
-env/
-pip-wheel-metadata/
-*.lock
-
-# Test 관련
-.pytest_cache/
-.tox/
-.coverage
-*.cover
-coverage.xml
-.cache/
-
-# Docker
-docker-compose.override.yml
-.dockerignore
-
-# 기타
-*.bak
-*.swp
-node_modules/
-staticfiles/
-mediafiles/
