@@ -1,8 +1,9 @@
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
+from sqlalchemy import func
 
 from app.models.source import Source, Album
-from app.schemas.source import SourceBase, SourceDetail, GalleryResponse
+from app.schemas.source import SourceDetail
 
 def get_source(db: Session, source_id: int):
     return db.query(Source).filter(Source.id==source_id).first()
@@ -21,4 +22,16 @@ def get_source_detail(db: Session, source_id: int):
 
 def get_all_source(skip: int, limit: int, db: Session):
     images=db.query(Source).order_by(Source.created_at.desc()).offset(skip).limit(limit).all()
-    return [{"id": image.id, "url": image.url, "date": image.created_at.date()} for image in images]
+    return [{"id": image.id, "url": image.url, "created_at": image.created_at.date()} for image in images]
+
+def get_all_albums(db: Session):
+    albums=(
+        db.query(
+            func.date(Album.created_at).label("date"),
+            func.count().label("count")
+        )
+        .group_by(func.date(Album.created_at))
+        .order_by(func.date(Album.created_at))
+        .all()
+    )
+    return [{"date": album.date, "count": album.count} for album in albums]

@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from contextlib import asynccontextmanager
 
 from app.api.routes import source
+from app.api.routes import stats
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -18,6 +19,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 app.include_router(source.router, prefix='/albums', tags=["albums"])
+app.include_router(stats.router, prefix='/stats', tags=["stats"])
 
 @app.get("/health")
 def healthCheck():
