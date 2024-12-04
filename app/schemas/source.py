@@ -28,7 +28,7 @@ class AlbumItems(AlbumBase):
 class GalleryResponse(BaseModel):
     id: int
     url: str
-    date: date
+    created_at: date
 
     class Config:
         orm_mode: True

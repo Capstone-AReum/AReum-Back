@@ -21,4 +21,4 @@ def get_source_detail(db: Session, source_id: int):
 
 def get_all_source(skip: int, limit: int, db: Session):
     images=db.query(Source).order_by(Source.created_at.desc()).offset(skip).limit(limit).all()
-    return [{"id": image.id, "url": image.url, "date": image.created_at.date()} for image in images]
+    return [{"id": image.id, "url": image.url, "created_at": image.created_at.date()} for image in images]
