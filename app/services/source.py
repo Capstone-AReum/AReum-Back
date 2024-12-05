@@ -1,7 +1,7 @@
 from fastapi import UploadFile, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
-import secrets
+import secrets, mimetypes
 
 from app.utils.s3_utils import upload_to_s3
 from app.models.source import Source, Album
@@ -32,8 +32,16 @@ def get_all_source(page: int, db: Session):
 
 #random한 이름으로 이미지 이름 변경
 def change_filename(file: UploadFile) -> UploadFile:
+    content_type, _=mimetypes.guess_type(file.filename)
+    if not content_type:
+        content_type="image/png"
+
+    extension=mimetypes.guess_extension(content_type)
+    if not extension:
+        extension=".png"
+
     random_name = secrets.token_urlsafe(16)
-    file.filename=f"{random_name}.png"
+    file.filename=f"{random_name}{extension}"
     return file
 
 def upload_album(db: Session, title: str, files: List[UploadFile], path: str):

@@ -40,6 +40,7 @@ def update_rmback_status(db: Session, rmback_id: int, status: str, output_url: O
     db.refresh(rmback)
     return rmback
 
+
 async def process_image(url: str) -> str:
     """
     Process an image by removing its background and uploading to S3.
@@ -53,19 +54,30 @@ async def process_image(url: str) -> str:
         response = requests.get(url, stream=True)
         response.raise_for_status()
 
-        # Step 2: Remove the background from the image
-        processed_data = remove(response.content)  # Expected to return bytes (likely PNG)
+        # Step 2: Determine the original file extension
+        content_type = response.headers.get("Content-Type")
+        if not content_type:
+            raise RuntimeError("Unable to determine Content-Type from the URL response.")
 
-        # Step 3: Set the file name for the processed image
-        file_name = url.split("/")[-1].split(".")[0] + "_processed.png"
+        # Guess the file extension based on the content type
+        extension = mimetypes.guess_extension(content_type)
+        if not extension:
+            raise RuntimeError("Unable to determine file extension from Content-Type.")
 
-        # Step 4: Prepare a file-like object for the processed data
+        # Step 3: Remove the background from the image
+        processed_data = remove(response.content)
+
+        # Step 4: Set the file name for the processed image
+        file_name = url.split("/")[-1].split(".")[0] + f"_processed{extension}"
+
+        # Step 5: Prepare a file-like object for the processed data
         file_like = io.BytesIO(processed_data)
 
-        # Step 5: Wrap the file-like object with a filename
+        # Step 6: Wrap the file-like object with a filename
+        file_like.name = file_name  # Assign the filename attribute
         wrapped_file = FileWrapper(file_like, file_name)
 
-        # Step 6: Upload the processed file to S3
+        # Step 7: Upload the processed file to S3
         s3_path = "rmback"  # S3 folder path
         file_url = upload_to_s3(file=wrapped_file, path=s3_path)
 
