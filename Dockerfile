@@ -1,6 +1,8 @@
 FROM python:3.12.1
 
 WORKDIR /code
+# 시스템 패키지 업데이트 및 필요한 라이브러리 설치
+RUN apt-get update && apt-get install -y libgl1-mesa-glx
 
 COPY ./requirements.txt /code/requirements.txt
 

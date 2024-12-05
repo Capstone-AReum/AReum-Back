@@ -2,6 +2,7 @@ import uvicorn
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 
+from app.api.routes.rmback import router as rmback_router
 from app.api.routes import source
 from app.api.routes import stats
 
@@ -17,6 +18,8 @@ async def lifespan(app: FastAPI):
     pass
 
 app = FastAPI(lifespan=lifespan)
+
+app.include_router(rmback_router)
 
 app.include_router(source.router, prefix='/albums', tags=["albums"])
 app.include_router(stats.router, prefix='/stats', tags=["stats"])
