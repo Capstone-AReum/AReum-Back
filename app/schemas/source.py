@@ -17,6 +17,7 @@ class SourceDetail(SourceBase):
 class AlbumBase(BaseModel):
     id: int
     title: str
+    location: str
     created_at: datetime.datetime
 
     class Config:
