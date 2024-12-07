@@ -30,6 +30,7 @@ class Thumbnail(BaseMin, Base):
     source_id=Column(Integer, ForeignKey('sources.id'), nullable=False)
     album_id=Column(Integer, ForeignKey('albums.id'), nullable=False)
     model_url=Column(String(255), nullable=False, unique=True)
+    voice_url=Column(String(255), nullable=True, unique=True)
 
     source = relationship("Source", backref=None)
     album = relationship("Album", backref=None)

@@ -33,3 +33,10 @@ class GalleryResponse(BaseModel):
 
     class Config:
         orm_mode: True
+
+class UrlResponse(BaseModel):
+    id: int
+    file_url: str
+
+    class Config:
+        orm_mode: True
