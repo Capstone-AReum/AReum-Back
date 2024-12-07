@@ -1,6 +1,8 @@
 from fastapi import UploadFile, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
+import cv2
+import numpy as np
 import secrets, mimetypes
 
 from app.utils.s3_utils import upload_to_s3, get_url_to_image
@@ -48,11 +50,11 @@ async def upload_thumbnail(db: Session, source_id: int):
         raise HTTPException(status_code=404, detail="No such source")
     
     result = get_url_to_image(source.url)
-
-    #분기 만들기 : 배경제거 or 3d 모델링
     filename=result["filename"]
     image_data=result["image_data"]
     content_type=result["content_type"]
+    
+    await resolution_valid(image_data)
     file_url=await call_ex_api(filename, image_data, content_type)
 
     #대표 이미지 DB 작업
@@ -61,3 +63,13 @@ async def upload_thumbnail(db: Session, source_id: int):
     db.commit()
     db.refresh(new_thumbnail)
     return file_url
+
+#이미지 해상도 validation    
+async def resolution_valid(byte_image : bytes):
+    image_array=np.frombuffer(byte_image, np.uint8)
+    image=cv2.imdecode(image_array, cv2.IMREAD_UNCHANGED)
+
+    height, width=image.shape[:2]
+    
+    if(height > 2048 or width > 2048):
+        raise HTTPException(status_code=422, detail="Image resoultion is too big")
