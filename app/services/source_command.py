@@ -26,9 +26,9 @@ def change_filename(file: UploadFile) -> UploadFile:
     file.filename=f"{random_name}{extension}"
     return file
 
-def upload_album(db: Session, title: str, files: List[UploadFile], path: str):
+def upload_album(db: Session, title: str, location: str, files: List[UploadFile], path: str):
     try:
-        new_album=Album(title=title)
+        new_album=Album(title=title, location=location)
         db.add(new_album)
         db.commit()
     

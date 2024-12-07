@@ -1,6 +1,6 @@
 from fastapi import APIRouter, UploadFile, File, Depends, Query
 from sqlalchemy.orm import Session
-from typing import List
+from typing import List, Optional
 
 from app.database import get_db
 from app.services.source_query import get_source_detail, get_all_source
@@ -11,8 +11,13 @@ router=APIRouter()
 
 #이미지 업로드
 @router.post("/upload", response_model=AlbumItems)
-async def upload_file(title: str, files: List[UploadFile] = File(...), db: Session = Depends(get_db)) -> dict:
-    new_album=upload_album(db=db, title=title, files=files, path="sources")
+async def upload_file(
+    title: Optional[str] = Query("...") , 
+    location: Optional[str] = Query("기타") ,
+    files: List[UploadFile] = File(...), 
+    db: Session = Depends(get_db)
+) -> dict:
+    new_album=upload_album(db=db, title=title, location=location, files=files, path="sources")
     return new_album
 
 #앨범 전체 조회

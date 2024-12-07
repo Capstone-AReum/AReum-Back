@@ -35,3 +35,14 @@ def get_all_albums(db: Session):
         .all()
     )
     return [{"date": album.date, "count": album.count} for album in albums]
+
+def group_by_locations(db: Session):
+    albums=(
+        db.query(
+            Album.location.label("loc"),
+            func.count().label("count")
+        )
+        .group_by(Album.location)
+        .all()
+    )
+    return [{"location": album.loc, "count": album.count} for album in albums]

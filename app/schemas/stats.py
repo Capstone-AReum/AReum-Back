@@ -7,3 +7,10 @@ class StatsBase(BaseModel):
 
     class Config:
         orm_mode: True
+
+class LocationBase(BaseModel):
+    location: str
+    count : int
+
+    class Config:
+        orm_mode: True
