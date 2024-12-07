@@ -12,6 +12,9 @@ from app.models.source import Source, Album, Thumbnail
 def get_source(db: Session, source_id: int):
     return db.query(Source).filter(Source.id==source_id).first()
 
+def get_thumbnail(db: Session, thumbnail_id: int):
+    return db.query(Thumbnail).filter(Thumbnail.id==thumbnail_id).first()
+
 #random한 이름으로 이미지 이름 변경
 def change_filename(file: UploadFile) -> UploadFile:
     content_type, _=mimetypes.guess_type(file.filename)
@@ -62,7 +65,7 @@ async def upload_thumbnail(db: Session, source_id: int):
     db.add(new_thumbnail)
     db.commit()
     db.refresh(new_thumbnail)
-    return file_url
+    return { "id": new_thumbnail.id, "file_url": file_url }
 
 #이미지 해상도 validation    
 async def resolution_valid(byte_image : bytes):
@@ -73,3 +76,17 @@ async def resolution_valid(byte_image : bytes):
     
     if(height > 2048 or width > 2048):
         raise HTTPException(status_code=422, detail="Image resoultion is too big")
+    
+async def upload_voice_file(db: Session, thumbnail_id: int, file: UploadFile):
+    try:
+        target_Thumbnail=get_thumbnail(db=db, thumbnail_id=thumbnail_id)
+        if not target_Thumbnail:
+            raise HTTPException(status_code=404, detail="No such thumbnail")
+    
+        file_url=upload_to_s3(file, "sounds")
+        target_Thumbnail.voice_url = file_url
+        db.commit()
+        db.refresh(target_Thumbnail)
+        return file_url
+    except RuntimeError as e:
+        raise HTTPException(status_code=500, detail=str(e))

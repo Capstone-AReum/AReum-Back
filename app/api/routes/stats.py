@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from typing import List
-from fastapi.responses import JSONResponse
 
 from app.database import get_db
 from app.schemas.stats import StatsBase, LocationBase
@@ -15,6 +14,6 @@ async def get_number_of_albums(db: Session = Depends(get_db)):
     return get_all_albums(db)
 
 #장소별 통계
-@router.get("/locations", response_class=JSONResponse)
+@router.get("/locations", response_model=List[LocationBase])
 async def get_stats_of_locations(db: Session = Depends(get_db)):
     return group_by_locations(db)

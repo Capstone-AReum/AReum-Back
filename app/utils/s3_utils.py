@@ -5,7 +5,7 @@ from fastapi import HTTPException
 from urllib.parse import urlparse
 from ..config import s3_client
 
-def upload_to_s3(file, path) -> None:
+def upload_to_s3(file, path) -> str:
     try:
         bucket_name=os.getenv("S3_BUCKET")
         region=os.getenv("AWS_REGION")
@@ -31,7 +31,7 @@ def getUniquePath():
     random_name = secrets.token_urlsafe(16)
     return random_name
 
-def byteFile_to_s3(file, path) -> None:
+def byteFile_to_s3(file, path) -> str:
     try:
         bucket_name=os.getenv("S3_BUCKET")
         region=os.getenv("AWS_REGION")
