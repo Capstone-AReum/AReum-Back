@@ -17,6 +17,7 @@ class Source(BaseMin, Base):
 class Album(BaseMin, Base):
     __tablename__="albums"
     title=Column(String(30), nullable=False)
+    location=Column(String(30), nullable=True)
 
     items=relationship("Source", back_populates="owner")
 
