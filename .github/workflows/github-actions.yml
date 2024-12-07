@@ -60,5 +60,6 @@ jobs:
                     -e AWS_REGION=${{ secrets.S3_REGION }} \
                     -e S3_BUCKET=${{ secrets.S3_BUCKET_NAME }} \
                     -e STABILITY_API_KEY=${{ secrets.STABILITY_API_KEY }} \
+                    -e PATH_CONVERT_VIDEO=${{ secrets.PATH_CONVERT_VIDEO }} \
                     -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}:latest
                     sudo docker image prune -f

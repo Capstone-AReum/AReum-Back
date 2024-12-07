@@ -93,7 +93,7 @@ async def is_mp3(file: UploadFile):
 
 #mp4 -> mp3 변환 by FFmpeg
 async def mp4_to_mp3(file: UploadFile):
-    ffmpeg_path=os.getenv("PATH_CONVERT_VIDEO", "ffempeg")
+    ffmpeg_path=os.getenv("PATH_CONVERT_VIDEO", "/usr/bin/ffempeg")
     input_video_path=f"temp_{file.filename}"
     #mp4파일 임시 파일로 저장
     with open(input_video_path, "wb") as f:
