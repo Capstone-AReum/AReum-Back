@@ -2,7 +2,7 @@ from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 
-from app.models.source import Source, Album
+from app.models.source import Source, Album, Thumbnail
 from app.schemas.source import SourceDetail
 
 def get_source(db: Session, source_id: int):
@@ -10,6 +10,9 @@ def get_source(db: Session, source_id: int):
 
 def get_album(db: Session, album_id: int):
     return db.query(Album).filter(Album.id==album_id).first()
+
+def get_thubnail_by_source(db: Session, source_id: int):
+    return db.query(Thumbnail).filter(Thumbnail.source_id==source_id).first()
     
 def get_source_detail(db: Session, source_id: int):
     source=get_source(db=db, source_id=source_id)
@@ -46,3 +49,12 @@ def group_by_locations(db: Session):
         .all()
     )
     return [{"location": album.loc, "count": album.count} for album in albums]
+
+def get_voice_from_source(db: Session, source_id: int):
+    source=get_source(db=db,source_id=source_id)
+    if not source:
+        raise HTTPException(status_code=404, detail="No such source")
+    thumb=get_thubnail_by_source(db=db, source_id=source.id)
+    if not thumb:
+        raise HTTPException(status_code=404, detail="No such thumbnail created by source")
+    return thumb.voice_url

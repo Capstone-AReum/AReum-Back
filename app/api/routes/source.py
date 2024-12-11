@@ -3,8 +3,8 @@ from sqlalchemy.orm import Session
 from typing import List, Optional
 
 from app.database import get_db
-from app.services.source_query import get_source_detail, get_all_source
-from app.services.source_command import upload_album, upload_thumbnail, upload_voice_file, is_mp3
+from app.services.source_query import get_source_detail, get_all_source, get_voice_from_source
+from app.services.source_command import upload_album, upload_thumbnail, upload_voice_file
 from app.schemas.source import AlbumItems, GalleryResponse, SourceDetail, UrlResponse
 
 router=APIRouter()
@@ -40,3 +40,8 @@ async def get_gallery(skip: int = Query(0, ge=0), limit: int = Query(10, ge=1), 
 @router.get("/{source_id}/details", response_model=SourceDetail)
 async def get_source(source_id: int, db: Session = Depends(get_db)):
     return get_source_detail(db=db, source_id=source_id)
+
+#voice_url 조회
+@router.get("/{source_id}/sounds", response_model=str)
+async def get_voice_url(source_id: int, db: Session = Depends(get_db)):
+    return get_voice_from_source(db=db, source_id=source_id)
