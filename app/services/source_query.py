@@ -57,4 +57,6 @@ def get_voice_from_source(db: Session, source_id: int):
     thumb=get_thubnail_by_source(db=db, source_id=source.id)
     if not thumb:
         raise HTTPException(status_code=404, detail="No such thumbnail created by source")
+    if thumb.voice_url is None:
+        return ""
     return thumb.voice_url
